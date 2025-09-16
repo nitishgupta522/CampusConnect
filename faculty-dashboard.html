@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Portal - EduManage Pro</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard-styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo"><i class="fas fa-chalkboard-teacher"></i><span>Faculty</span></div>
+        </div>
+        <div class="sidebar-menu">
+            <div class="menu-section">
+                <h3>Main</h3>
+                <a href="#" class="menu-item active" data-section="overview"><i class="fas fa-gauge"></i><span>Overview</span></a>
+                <a href="#" class="menu-item" data-section="classes"><i class="fas fa-users"></i><span>My Classes</span></a>
+                <a href="#" class="menu-item" data-section="attendance"><i class="fas fa-calendar-check"></i><span>Attendance</span></a>
+                <a href="#" class="menu-item" data-section="assignments"><i class="fas fa-file-alt"></i><span>Assignments</span></a>
+                <a href="#" class="menu-item" data-section="messages"><i class="fas fa-envelope"></i><span>Messages</span></a>
+            </div>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="top-header">
+            <div class="header-left">
+                <button class="sidebar-toggle"><i class="fas fa-bars"></i></button>
+                <div class="search-bar"><i class="fas fa-search"></i><input type="text" placeholder="Search..."></div>
+            </div>
+            <div class="header-right">
+                <div class="header-actions">
+                    <button class="action-btn" title="Notifications"><i class="fas fa-bell"></i></button>
+                </div>
+                <div class="user-profile">
+                    <div class="user-avatar"><img src="https://via.placeholder.com/40x40" alt="Faculty"></div>
+                    <div class="user-info"><span class="user-name" id="userName">Faculty User</span><span class="user-role">Faculty</span></div>
+                    <div class="user-dropdown">
+                        <button class="dropdown-toggle"><i class="fas fa-chevron-down"></i></button>
+                        <div class="dropdown-menu">
+                            <a href="#" class="dropdown-item" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard-content">
+            <div id="overview-section" class="content-section active">
+                <div class="stats-grid">
+                    <div class="stat-card"><div class="stat-icon"><i class="fas fa-book"></i></div><div class="stat-info"><h3 id="classesCount">3</h3><p>Assigned Classes</p></div></div>
+                    <div class="stat-card"><div class="stat-icon"><i class="fas fa-user-graduate"></i></div><div class="stat-info"><h3 id="studentsCount">118</h3><p>Total Students</p></div></div>
+                    <div class="stat-card"><div class="stat-icon"><i class="fas fa-file-alt"></i></div><div class="stat-info"><h3 id="pendingAssignments">4</h3><p>Pending Reviews</p></div></div>
+                </div>
+                <div class="quick-actions">
+                    <h2>Quick Actions</h2>
+                    <div class="action-grid">
+                        <button class="action-card" onclick="navigateToSection('attendance')"><i class="fas fa-check"></i><span>Mark Attendance</span></button>
+                        <button class="action-card" onclick="navigateToSection('assignments')"><i class="fas fa-upload"></i><span>Create Assignment</span></button>
+                    </div>
+                </div>
+            </div>
+            <div id="classes-section" class="content-section"><div class="placeholder">Your classes will appear here.</div></div>
+            <div id="attendance-section" class="content-section"><div class="placeholder">Attendance tools coming soon.</div></div>
+            <div id="assignments-section" class="content-section">
+                <div class="section-header">
+                    <h2>Assignment Management</h2>
+                    <button class="btn-primary" onclick="showCreateAssignmentModal()">
+                        <i class="fas fa-plus"></i> Create Assignment
+                    </button>
+                </div>
+                
+                <div class="assignments-container">
+                    <div class="assignments-filters">
+                        <select id="assignmentClassFilter" onchange="filterAssignments()">
+                            <option value="">All Classes</option>
+                            <option value="12A">Class 12A</option>
+                            <option value="11B">Class 11B</option>
+                            <option value="10C">Class 10C</option>
+                        </select>
+                        <select id="assignmentSubjectFilter" onchange="filterAssignments()">
+                            <option value="">All Subjects</option>
+                            <option value="Mathematics">Mathematics</option>
+                            <option value="Physics">Physics</option>
+                            <option value="Chemistry">Chemistry</option>
+                        </select>
+                        <select id="assignmentStatusFilter" onchange="filterAssignments()">
+                            <option value="">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="completed">Completed</option>
+                            <option value="draft">Draft</option>
+                        </select>
+                    </div>
+                    
+                    <div id="assignmentsList" class="assignments-list">
+                        <!-- Assignments will be loaded here -->
+                    </div>
+                </div>
+            </div>
+            <div id="messages-section" class="content-section"><div class="placeholder">Messages coming soon.</div></div>
+        </div>
+    </div>
+
+    <!-- Assignment Creation Modal -->
+    <div id="assignmentModal" class="modal">
+        <div class="modal-content assignment-modal">
+            <div class="modal-header">
+                <h3>Create New Assignment</h3>
+                <span class="close" onclick="closeAssignmentModal()">&times;</span>
+            </div>
+            <form id="assignmentForm" onsubmit="createAssignment(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="assignmentTitle">Assignment Title *</label>
+                        <input type="text" id="assignmentTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="assignmentSubject">Subject *</label>
+                        <select id="assignmentSubject" required>
+                            <option value="">Select Subject</option>
+                            <option value="Mathematics">Mathematics</option>
+                            <option value="Physics">Physics</option>
+                            <option value="Chemistry">Chemistry</option>
+                            <option value="English">English</option>
+                            <option value="Computer Science">Computer Science</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="assignmentClass">Class *</label>
+                        <select id="assignmentClass" required>
+                            <option value="">Select Class</option>
+                            <option value="12A">Class 12A</option>
+                            <option value="11B">Class 11B</option>
+                            <option value="10C">Class 10C</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="assignmentDueDate">Due Date *</label>
+                        <input type="datetime-local" id="assignmentDueDate" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="assignmentDescription">Description *</label>
+                    <textarea id="assignmentDescription" rows="4" required placeholder="Describe the assignment requirements..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="assignmentFiles">Attach Files (PDF, JPG, PNG)</label>
+                    <input type="file" id="assignmentFiles" multiple accept=".pdf,.jpg,.jpeg,.png" onchange="handleFileSelection(event)">
+                    <div id="filePreview" class="file-preview"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="assignmentMaxMarks">Maximum Marks</label>
+                    <input type="number" id="assignmentMaxMarks" min="1" max="100" value="100">
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="closeAssignmentModal()">Cancel</button>
+                    <button type="submit" class="btn-primary">Create Assignment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Assignment Details Modal -->
+    <div id="assignmentDetailsModal" class="modal">
+        <div class="modal-content assignment-details-modal">
+            <div class="modal-header">
+                <h3>Assignment Details</h3>
+                <span class="close" onclick="closeAssignmentDetailsModal()">&times;</span>
+            </div>
+            <div id="assignmentDetailsContent">
+                <!-- Assignment details will be loaded here -->
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.0.0/firebase-app-compat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.0.0/firebase-auth-compat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.0.0/firebase-firestore-compat.min.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="main.js"></script>
+    <script src="module-integration.js"></script>
+    <script src="assignment-management.js"></script>
+    <script src="realtime-updates.js"></script>
+    <script src="demo-data.js"></script>
+    <script>
+    (function(){
+        const menuLinks = document.querySelectorAll('.menu-item');
+        menuLinks.forEach(l=>l.addEventListener('click',function(e){e.preventDefault();menuLinks.forEach(x=>x.classList.remove('active'));this.classList.add('active');const sec=this.getAttribute('data-section');document.querySelectorAll('.content-section').forEach(s=>s.classList.remove('active'));const el=document.getElementById(sec+'-section');if(el) el.classList.add('active');}));
+        document.querySelector('.sidebar-toggle').addEventListener('click',()=>{document.querySelector('.sidebar').classList.toggle('open')});
+        const saved = localStorage.getItem('currentUser');
+        if(saved){ try { const u=JSON.parse(saved); document.getElementById('userName').textContent = u.fullName || u.username || 'Faculty User'; } catch(_){} }
+    })();
+    </script>
+</body>
+</html>
+

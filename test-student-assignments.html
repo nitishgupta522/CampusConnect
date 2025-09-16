@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Student Assignments</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard-styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+    <div style="padding: 20px;">
+        <h1>Test Student Assignments</h1>
+        <button onclick="createTestAssignment()" class="btn-primary">Create Test Assignment</button>
+        <button onclick="loadStudentAssignments()" class="btn-secondary">Load Student Assignments</button>
+        <button onclick="checkLocalStorage()" class="btn-info">Check Local Storage</button>
+        <div id="testResults" style="margin-top: 20px;"></div>
+    </div>
+
+    <div id="studentAssignmentsList" class="assignments-list" style="margin-top: 20px;">
+        <!-- Student assignments will be loaded here -->
+    </div>
+
+    <script>
+        // Set up test student user
+        localStorage.setItem('currentUser', JSON.stringify({
+            id: 'STU001',
+            username: 'student',
+            fullName: 'Test Student',
+            role: 'student',
+            class: '12A'
+        }));
+
+        function createTestAssignment() {
+            console.log('Creating test assignment...');
+            
+            // Create a test assignment
+            const assignmentData = {
+                id: 'ASSIGN_TEST_' + Date.now(),
+                title: 'Test Assignment for Student',
+                subject: 'Mathematics',
+                class: '12A',
+                description: 'This is a test assignment to verify student can see it.',
+                dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+                maxMarks: 100,
+                facultyId: 'FAC001',
+                facultyName: 'Test Faculty',
+                files: [
+                    {
+                        name: 'test_assignment.pdf',
+                        url: 'https://example.com/test.pdf',
+                        size: 1024000,
+                        type: 'application/pdf'
+                    }
+                ],
+                status: 'active',
+                createdAt: new Date()
+            };
+
+            // Save to local storage
+            let assignments = JSON.parse(localStorage.getItem('assignments') || '[]');
+            assignments.push(assignmentData);
+            localStorage.setItem('assignments', JSON.stringify(assignments));
+            
+            console.log('Test assignment created:', assignmentData);
+            document.getElementById('testResults').innerHTML = '<p style="color: green;">Test assignment created successfully!</p>';
+        }
+
+        function loadStudentAssignments() {
+            console.log('Loading student assignments...');
+            
+            // Initialize assignment manager
+            if (!window.assignmentManager) {
+                window.assignmentManager = new AssignmentManager();
+            }
+            
+            // Load assignments
+            window.assignmentManager.loadAssignments();
+        }
+
+        function checkLocalStorage() {
+            console.log('Checking local storage...');
+            const assignments = JSON.parse(localStorage.getItem('assignments') || '[]');
+            const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            
+            console.log('Current user:', user);
+            console.log('All assignments:', assignments);
+            
+            const studentAssignments = assignments.filter(a => a.class === (user.class || '12A'));
+            console.log('Student assignments:', studentAssignments);
+            
+            document.getElementById('testResults').innerHTML = `
+                <div style="background: #f0f0f0; padding: 10px; margin: 10px 0;">
+                    <h3>Local Storage Check:</h3>
+                    <p><strong>Current User:</strong> ${JSON.stringify(user, null, 2)}</p>
+                    <p><strong>Total Assignments:</strong> ${assignments.length}</p>
+                    <p><strong>Student Assignments:</strong> ${studentAssignments.length}</p>
+                    <p><strong>Student Class:</strong> ${user.class || '12A'}</p>
+                </div>
+            `;
+        }
+
+        // Initialize assignment manager
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Initializing test page...');
+            setTimeout(() => {
+                window.assignmentManager = new AssignmentManager();
+                console.log('Assignment manager initialized for test');
+            }, 1000);
+        });
+    </script>
+    <script src="assignment-management.js"></script>
+</body>
+</html>
+
+

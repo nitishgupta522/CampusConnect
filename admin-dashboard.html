@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - EduManage Pro</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard-styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>EduManage Pro</span>
+            </div>
+        </div>
+        <div class="sidebar-menu">
+            <div class="menu-section">
+                <h3>Main</h3>
+                <a href="#" class="menu-item active" data-section="overview">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Overview</span>
+                </a>
+                <a href="#" class="menu-item" data-section="analytics">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Analytics</span>
+                </a>
+            </div>
+            <div class="menu-section">
+                <h3>Management</h3>
+                <a href="#" class="menu-item" data-section="students">
+                    <i class="fas fa-user-graduate"></i>
+                    <span>Students</span>
+                </a>
+                <a href="#" class="menu-item" data-section="faculty">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span>Faculty</span>
+                </a>
+                <a href="#" class="menu-item" data-section="parents">
+                    <i class="fas fa-users"></i>
+                    <span>Parents</span>
+                </a>
+                <a href="#" class="menu-item" data-section="courses">
+                    <i class="fas fa-book"></i>
+                    <span>Courses</span>
+                </a>
+                <a href="#" class="menu-item" data-section="admin-controls">
+                    <i class="fas fa-cogs"></i>
+                    <span>Admin Controls</span>
+                </a>
+            </div>
+            <div class="menu-section">
+                <h3>Academic</h3>
+                <a href="#" class="menu-item" data-section="attendance">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Attendance</span>
+                </a>
+                <a href="#" class="menu-item" data-section="fees">
+                    <i class="fas fa-rupee-sign"></i>
+                    <span>Fee Management</span>
+                </a>
+                <a href="#" class="menu-item" data-section="results">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Results</span>
+                </a>
+                <a href="#" class="menu-item" data-section="timetable">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Timetable</span>
+                </a>
+            </div>
+            <div class="menu-section">
+                <h3>Communication</h3>
+                <a href="#" class="menu-item" data-section="announcements">
+                    <i class="fas fa-bullhorn"></i>
+                    <span>Announcements</span>
+                </a>
+                <a href="#" class="menu-item" data-section="messages">
+                    <i class="fas fa-envelope"></i>
+                    <span>Messages</span>
+                </a>
+                <a href="#" class="menu-item" data-section="notifications">
+                    <i class="fas fa-bell"></i>
+                    <span>Notifications</span>
+                </a>
+            </div>
+            <div class="menu-section">
+                <h3>Facilities</h3>
+                <a href="#" class="menu-item" data-section="library">
+                    <i class="fas fa-book-open"></i>
+                    <span>Library</span>
+                </a>
+                <a href="#" class="menu-item" data-section="hostel">
+                    <i class="fas fa-bed"></i>
+                    <span>Hostel</span>
+                </a>
+                <a href="#" class="menu-item" data-section="transport">
+                    <i class="fas fa-bus"></i>
+                    <span>Transport</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="top-header">
+            <div class="header-left">
+                <button class="sidebar-toggle"><i class="fas fa-bars"></i></button>
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search students, faculty, or records...">
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="header-actions">
+                    <button class="action-btn" title="Notifications"><i class="fas fa-bell"></i><span class="badge">5</span></button>
+                    <button class="action-btn" title="Messages"><i class="fas fa-envelope"></i><span class="badge">12</span></button>
+                    <button class="action-btn" title="Settings"><i class="fas fa-cog"></i></button>
+                </div>
+                <div class="user-profile">
+                    <div class="user-avatar"><img src="https://via.placeholder.com/40x40" alt="Admin" id="userAvatar"></div>
+                    <div class="user-info">
+                        <span class="user-name" id="userName">Admin User</span>
+                        <span class="user-role">Administrator</span>
+                    </div>
+                    <div class="user-dropdown">
+                        <button class="dropdown-toggle"><i class="fas fa-chevron-down"></i></button>
+                        <div class="dropdown-menu">
+                            <a href="#" class="dropdown-item"><i class="fas fa-user"></i> Profile</a>
+                            <a href="#" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard-content">
+            <div id="admin-dashboard"></div>
+            <div id="overview-section" class="content-section active" style="display:none">
+                <div class="stats-grid">
+                    <div class="stat-card"><div class="stat-icon"><i class="fas fa-user-graduate"></i></div><div class="stat-info"><h3 id="totalStudents">1,234</h3><p>Total Students</p><span class="stat-change positive">+12 this month</span></div></div>
+                    <div class="stat-card"><div class="stat-icon"><i class="fas fa-chalkboard-teacher"></i></div><div class="stat-info"><h3 id="totalFaculty">89</h3><p>Faculty Members</p><span class="stat-change positive">+3 this month</span></div></div>
+                    <div class="stat-card"><div class="stat-icon"><i class="fas fa-rupee-sign"></i></div><div class="stat-info"><h3 id="feeCollection">₹28.5L</h3><p>Fee Collection</p><span class="stat-change positive">+8.2% this month</span></div></div>
+                    <div class="stat-card"><div class="stat-icon"><i class="fas fa-percentage"></i></div><div class="stat-info"><h3 id="avgAttendance">92.5%</h3><p>Avg Attendance</p><span class="stat-change positive">+2.1% this month</span></div></div>
+                </div>
+                <div class="quick-actions">
+                    <h2>Quick Actions</h2>
+                    <div class="action-grid">
+                        <button class="action-card" onclick="navigateToSection('students')"><i class="fas fa-user-plus"></i><span>Add New Student</span></button>
+                        <button class="action-card" onclick="navigateToSection('faculty')"><i class="fas fa-user-tie"></i><span>Add Faculty</span></button>
+                        <button class="action-card" onclick="navigateToSection('announcements')"><i class="fas fa-bullhorn"></i><span>Make Announcement</span></button>
+                        <button class="action-card" onclick="generateReports()"><i class="fas fa-file-alt"></i><span>Generate Report</span></button>
+                    </div>
+                </div>
+            </div>
+            <div id="analytics-section" class="content-section" style="display:none">
+                <div class="section-header">
+                    <h2>Analytics Dashboard</h2>
+                    <div class="section-actions"><button class="btn-secondary" onclick="exportAnalytics()"><i class="fas fa-download"></i> Export Data</button></div>
+                </div>
+                <div class="analytics-grid">
+                    <div class="chart-card"><h3>Attendance Trends</h3><canvas id="attendanceTrendChart"></canvas></div>
+                    <div class="chart-card"><h3>Fee Collection</h3><canvas id="feeCollectionChart"></canvas></div>
+                    <div class="chart-card"><h3>Student Performance</h3><canvas id="performanceChart"></canvas></div>
+                    <div class="chart-card"><h3>Class Distribution</h3><canvas id="classDistributionChart"></canvas></div>
+                </div>
+            </div>
+            <div id="students-section" class="content-section" style="display:none">
+                <!-- Student management will be loaded here -->
+            </div>
+            <div id="faculty-section" class="content-section" style="display:none">
+                <!-- Faculty management will be loaded here -->
+            </div>
+            <div id="parents-section" class="content-section" style="display:none"><div class="placeholder">Parent directory coming soon.</div></div>
+            <div id="courses-section" class="content-section" style="display:none"><div class="placeholder">Course management coming soon.</div></div>
+            <div id="admin-controls-section" class="content-section" style="display:none">
+                <!-- Admin controls will be loaded here -->
+            </div>
+            <div id="attendance-section" class="content-section" style="display:none">
+                <!-- Attendance management will be loaded here -->
+            </div>
+            <div id="fees-section" class="content-section" style="display:none">
+                <!-- Fee management will be loaded here -->
+            </div>
+            <div id="results-section" class="content-section" style="display:none"><div class="placeholder">Results management coming soon.</div></div>
+            <div id="timetable-section" class="content-section" style="display:none"><div class="placeholder">Timetable management coming soon.</div></div>
+            <div id="announcements-section" class="content-section" style="display:none"><div class="placeholder">Announcements coming soon.</div></div>
+            <div id="messages-section" class="content-section" style="display:none"><div class="placeholder">Messages coming soon.</div></div>
+            <div id="notifications-section" class="content-section" style="display:none"><div class="placeholder">Notifications coming soon.</div></div>
+            <div id="library-section" class="content-section" style="display:none"><div class="placeholder">Library coming soon.</div></div>
+            <div id="hostel-section" class="content-section" style="display:none"><div class="placeholder">Hostel coming soon.</div></div>
+            <div id="transport-section" class="content-section" style="display:none"><div class="placeholder">Transport coming soon.</div></div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.0.0/firebase-app-compat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.0.0/firebase-auth-compat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.0.0/firebase-firestore-compat.min.js"></script>
+    
+    <!-- Core Modules -->
+    <script src="error-handler.js"></script>
+    <script src="module-loader.js"></script>
+    <script src="data-sync.js"></script>
+    <script src="performance-monitor.js"></script>
+    <script src="api-manager.js"></script>
+    <script src="security-manager.js"></script>
+    <script src="notification-manager.js"></script>
+    
+    <!-- Application Modules (loaded by module-loader) -->
+    <script src="firebase-config.js"></script>
+    <script src="main.js"></script>
+    <script src="module-integration.js"></script>
+    <script src="admin-controls.js"></script>
+    <script src="database-integration.js"></script>
+    <script src="student-management.js"></script>
+    <script src="faculty-management.js"></script>
+    <script src="attendance-management.js"></script>
+    <script src="fee-management.js"></script>
+    <script src="admin-dashboard.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parent Portal - EduManage Pro</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard-styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+    <div class="sidebar">
+        <div class="sidebar-header"><div class="logo"><i class="fas fa-users"></i><span>Parent</span></div></div>
+        <div class="sidebar-menu">
+            <div class="menu-section">
+                <h3>Main</h3>
+                <a href="#" class="menu-item active" data-section="overview"><i class="fas fa-gauge"></i><span>Overview</span></a>
+                <a href="#" class="menu-item" data-section="children"><i class="fas fa-child"></i><span>Children</span></a>
+                <a href="#" class="menu-item" data-section="fees"><i class="fas fa-rupee-sign"></i><span>Fees</span></a>
+                <a href="#" class="menu-item" data-section="messages"><i class="fas fa-envelope"></i><span>Messages</span></a>
+                <a href="#" class="menu-item" data-section="announcements"><i class="fas fa-bullhorn"></i><span>Announcements</span></a>
+            </div>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="top-header">
+            <div class="header-left"><button class="sidebar-toggle"><i class="fas fa-bars"></i></button><div class="search-bar"><i class="fas fa-search"></i><input type="text" placeholder="Search..."></div></div>
+            <div class="header-right">
+                <div class="user-profile">
+                    <div class="user-avatar"><img src="https://via.placeholder.com/40x40" alt="Parent"></div>
+                    <div class="user-info"><span class="user-name" id="userName">Parent User</span><span class="user-role">Parent</span></div>
+                    <div class="user-dropdown"><button class="dropdown-toggle"><i class="fas fa-chevron-down"></i></button><div class="dropdown-menu"><a href="#" class="dropdown-item" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></div></div>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard-content">
+            <div id="parent-dashboard-section">
+                <!-- Parent dashboard will be loaded here -->
+            </div>
+            <div id="overview-section" class="content-section active">
+                <div class="stats-grid">
+                    <div class="stat-card"><div class="stat-icon"><i class="fas fa-child"></i></div><div class="stat-info"><h3 id="childrenCount">1</h3><p>Children</p></div></div>
+                    <div class="stat-card"><div class="stat-icon"><i class="fas fa-percentage"></i></div><div class="stat-info"><h3 id="avgAttendance">94%</h3><p>Average Attendance</p></div></div>
+                    <div class="stat-card"><div class="stat-icon"><i class="fas fa-rupee-sign"></i></div><div class="stat-info"><h3 id="feesDue">₹20,000</h3><p>Fees Due</p></div></div>
+                </div>
+                <div class="quick-actions"><h2>Quick Actions</h2><div class="action-grid"><button class="action-card" onclick="navigateToSection('fees')"><i class="fas fa-receipt"></i><span>View Fees</span></button><button class="action-card" onclick="navigateToSection('announcements')"><i class="fas fa-bullhorn"></i><span>View Announcements</span></button></div></div>
+            </div>
+            <div id="children-section" class="content-section"><div class="placeholder">Children details will be shown here.</div></div>
+            <div id="fees-section" class="content-section"><div class="placeholder">Fees details coming soon.</div></div>
+            <div id="messages-section" class="content-section"><div class="placeholder">Messages coming soon.</div></div>
+            <div id="announcements-section" class="content-section"><div class="placeholder">Announcements coming soon.</div></div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.0.0/firebase-app-compat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.0.0/firebase-auth-compat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.0.0/firebase-firestore-compat.min.js"></script>
+    
+    <!-- Core Modules -->
+    <script src="error-handler.js"></script>
+    <script src="module-loader.js"></script>
+    <script src="data-sync.js"></script>
+    <script src="performance-monitor.js"></script>
+    <script src="api-manager.js"></script>
+    <script src="security-manager.js"></script>
+    <script src="notification-manager.js"></script>
+    
+    <!-- Application Modules -->
+    <script src="firebase-config.js"></script>
+    <script src="main.js"></script>
+    <script src="parent-dashboard.js"></script>
+    <script src="main.js"></script>
+    <script src="module-integration.js"></script>
+    <script>
+    (function(){
+        const menuLinks = document.querySelectorAll('.menu-item');
+        menuLinks.forEach(l=>l.addEventListener('click',function(e){e.preventDefault();menuLinks.forEach(x=>x.classList.remove('active'));this.classList.add('active');const sec=this.getAttribute('data-section');document.querySelectorAll('.content-section').forEach(s=>s.classList.remove('active'));const el=document.getElementById(sec+'-section');if(el) el.classList.add('active');}));
+        document.querySelector('.sidebar-toggle').addEventListener('click',()=>{document.querySelector('.sidebar').classList.toggle('open')});
+        const saved = localStorage.getItem('currentUser');
+        if(saved){ try { const u=JSON.parse(saved); document.getElementById('userName').textContent = u.fullName || u.username || 'Parent User'; } catch(_){} }
+    })();
+    </script>
+</body>
+</html>
+

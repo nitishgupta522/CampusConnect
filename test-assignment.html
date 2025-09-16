@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Assignment Creation</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard-styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+    <div style="padding: 20px;">
+        <h1>Test Assignment Creation</h1>
+        <button onclick="testAssignmentCreation()" class="btn-primary">Test Create Assignment</button>
+        <button onclick="testShowModal()" class="btn-secondary">Test Show Modal</button>
+        <div id="testResults" style="margin-top: 20px;"></div>
+    </div>
+
+    <!-- Assignment Creation Modal -->
+    <div id="assignmentModal" class="modal">
+        <div class="modal-content assignment-modal">
+            <div class="modal-header">
+                <h3>Create New Assignment</h3>
+                <span class="close" onclick="closeAssignmentModal()">&times;</span>
+            </div>
+            <form id="assignmentForm" onsubmit="createAssignment(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="assignmentTitle">Assignment Title *</label>
+                        <input type="text" id="assignmentTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="assignmentSubject">Subject *</label>
+                        <select id="assignmentSubject" required>
+                            <option value="">Select Subject</option>
+                            <option value="Mathematics">Mathematics</option>
+                            <option value="Physics">Physics</option>
+                            <option value="Chemistry">Chemistry</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="assignmentClass">Class *</label>
+                        <select id="assignmentClass" required>
+                            <option value="">Select Class</option>
+                            <option value="12A">Class 12A</option>
+                            <option value="11B">Class 11B</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="assignmentDueDate">Due Date *</label>
+                        <input type="datetime-local" id="assignmentDueDate" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="assignmentDescription">Description *</label>
+                    <textarea id="assignmentDescription" rows="4" required placeholder="Describe the assignment requirements..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="assignmentFiles">Attach Files (PDF, JPG, PNG)</label>
+                    <input type="file" id="assignmentFiles" multiple accept=".pdf,.jpg,.jpeg,.png" onchange="handleFileSelection(event)">
+                    <div id="filePreview" class="file-preview"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="assignmentMaxMarks">Maximum Marks</label>
+                    <input type="number" id="assignmentMaxMarks" min="1" max="100" value="100">
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="closeAssignmentModal()">Cancel</button>
+                    <button type="submit" class="btn-primary">Create Assignment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Set up test user
+        localStorage.setItem('currentUser', JSON.stringify({
+            id: 'FAC001',
+            username: 'faculty',
+            fullName: 'Test Faculty',
+            role: 'faculty'
+        }));
+
+        function testShowModal() {
+            console.log('Testing show modal...');
+            if (window.assignmentManager) {
+                window.assignmentManager.showCreateAssignmentModal();
+            } else {
+                console.log('Assignment manager not found, initializing...');
+                window.assignmentManager = new AssignmentManager();
+                setTimeout(() => {
+                    window.assignmentManager.showCreateAssignmentModal();
+                }, 1000);
+            }
+        }
+
+        function testAssignmentCreation() {
+            console.log('Testing assignment creation...');
+            // Fill form with test data
+            document.getElementById('assignmentTitle').value = 'Test Assignment';
+            document.getElementById('assignmentSubject').value = 'Mathematics';
+            document.getElementById('assignmentClass').value = '12A';
+            document.getElementById('assignmentDescription').value = 'This is a test assignment';
+            document.getElementById('assignmentDueDate').value = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 16);
+            document.getElementById('assignmentMaxMarks').value = '100';
+
+            // Submit form
+            const form = document.getElementById('assignmentForm');
+            const event = new Event('submit');
+            form.dispatchEvent(event);
+        }
+
+        function closeAssignmentModal() {
+            document.getElementById('assignmentModal').style.display = 'none';
+        }
+
+        function handleFileSelection(event) {
+            const files = event.target.files;
+            const preview = document.getElementById('filePreview');
+            
+            preview.innerHTML = '';
+            
+            Array.from(files).forEach(file => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <i class="fas fa-file"></i>
+                    <span>${file.name}</span>
+                    <span class="file-size">(${formatFileSize(file.size)})</span>
+                `;
+                preview.appendChild(fileItem);
+            });
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Initialize assignment manager
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Initializing test page...');
+            setTimeout(() => {
+                window.assignmentManager = new AssignmentManager();
+                console.log('Assignment manager initialized for test');
+            }, 1000);
+        });
+    </script>
+    <script src="assignment-management.js"></script>
+</body>
+</html>
+

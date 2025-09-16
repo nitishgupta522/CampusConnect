@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Management System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>EduManage Pro</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#" class="nav-link">Home</a>
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+            <div class="nav-auth">
+                <button class="btn-login" onclick="showLoginModal()">Login</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1>Complete School Management Solution</h1>
+                <p>Streamline your educational institution with our comprehensive management system featuring attendance tracking, fee management, result publishing, and much more.</p>
+                <div class="hero-buttons">
+                    <button class="btn-primary" onclick="showLoginModal()">Get Started</button>
+                    <button class="btn-secondary" onclick="showDemo()">Watch Demo</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="hero-card">
+                    <i class="fas fa-users-cog"></i>
+                    <h3>Multi-Role Access</h3>
+                    <p>Admin, Faculty, Students & Parents</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLoginModal()">&times;</span>
+            <div class="login-container">
+                <h2>Login to EduManage Pro</h2>
+                <div class="role-selector">
+                    <button class="role-btn active" data-role="admin">
+                        <i class="fas fa-user-shield"></i>
+                        Admin
+                    </button>
+                    <button class="role-btn" data-role="faculty">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        Faculty
+                    </button>
+                    <button class="role-btn" data-role="student">
+                        <i class="fas fa-user-graduate"></i>
+                        Student
+                    </button>
+                    <button class="role-btn" data-role="parent">
+                        <i class="fas fa-users"></i>
+                        Parent
+                    </button>
+                </div>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <input type="text" id="username" placeholder="Username/Email" required>
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="password" placeholder="Password" required>
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <button type="submit" class="btn-login-submit">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Login
+                    </button>
+                </form>
+                <div class="login-footer">
+                    <a href="#" onclick="showForgotPassword()">Forgot Password?</a>
+                    <a href="#" onclick="showRegistration()">New Registration</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Modal -->
+    <div id="registrationModal" class="modal">
+        <div class="modal-content registration-modal">
+            <div class="modal-header">
+                <h2>New Registration</h2>
+                <span class="close" onclick="closeRegistrationModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="registration-tabs">
+                    <button class="tab-btn active" onclick="showRegistrationTab('student')">
+                        <i class="fas fa-user-graduate"></i> Student
+                    </button>
+                    <button class="tab-btn" onclick="showRegistrationTab('faculty')">
+                        <i class="fas fa-chalkboard-teacher"></i> Faculty
+                    </button>
+                    <button class="tab-btn" onclick="showRegistrationTab('parent')">
+                        <i class="fas fa-users"></i> Parent
+                    </button>
+                </div>
+
+                <!-- Student Registration Form -->
+                <div id="studentRegistration" class="registration-form active">
+                    <form id="studentForm" onsubmit="handleStudentRegistration(event)">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>First Name *</label>
+                                <input type="text" id="studentFirstName" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Last Name *</label>
+                                <input type="text" id="studentLastName" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Email *</label>
+                                <input type="email" id="studentEmail" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Phone *</label>
+                                <input type="tel" id="studentPhone" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Date of Birth *</label>
+                                <input type="date" id="studentDOB" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Gender *</label>
+                                <select id="studentGender" required>
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Class *</label>
+                                <select id="studentClass" required>
+                                    <option value="">Select Class</option>
+                                    <option value="9A">Class 9A</option>
+                                    <option value="9B">Class 9B</option>
+                                    <option value="10A">Class 10A</option>
+                                    <option value="10B">Class 10B</option>
+                                    <option value="11A">Class 11A</option>
+                                    <option value="11B">Class 11B</option>
+                                    <option value="12A">Class 12A</option>
+                                    <option value="12B">Class 12B</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Roll Number *</label>
+                                <input type="text" id="studentRollNumber" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Address *</label>
+                            <textarea id="studentAddress" rows="3" required></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Password *</label>
+                                <input type="password" id="studentPassword" required minlength="6">
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm Password *</label>
+                                <input type="password" id="studentConfirmPassword" required minlength="6">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-register-submit">
+                            <i class="fas fa-user-plus"></i>
+                            Register as Student
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Faculty Registration Form -->
+                <div id="facultyRegistration" class="registration-form">
+                    <form id="facultyForm" onsubmit="handleFacultyRegistration(event)">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>First Name *</label>
+                                <input type="text" id="facultyFirstName" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Last Name *</label>
+                                <input type="text" id="facultyLastName" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Email *</label>
+                                <input type="email" id="facultyEmail" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Phone *</label>
+                                <input type="tel" id="facultyPhone" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Employee ID *</label>
+                                <input type="text" id="facultyEmployeeId" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Department *</label>
+                                <select id="facultyDepartment" required>
+                                    <option value="">Select Department</option>
+                                    <option value="mathematics">Mathematics</option>
+                                    <option value="science">Science</option>
+                                    <option value="english">English</option>
+                                    <option value="social-studies">Social Studies</option>
+                                    <option value="computer-science">Computer Science</option>
+                                    <option value="physical-education">Physical Education</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Subject *</label>
+                                <input type="text" id="facultySubject" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Experience (Years) *</label>
+                                <input type="number" id="facultyExperience" min="0" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Address *</label>
+                            <textarea id="facultyAddress" rows="3" required></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Password *</label>
+                                <input type="password" id="facultyPassword" required minlength="6">
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm Password *</label>
+                                <input type="password" id="facultyConfirmPassword" required minlength="6">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-register-submit">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            Register as Faculty
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Parent Registration Form -->
+                <div id="parentRegistration" class="registration-form">
+                    <form id="parentForm" onsubmit="handleParentRegistration(event)">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>First Name *</label>
+                                <input type="text" id="parentFirstName" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Last Name *</label>
+                                <input type="text" id="parentLastName" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Email *</label>
+                                <input type="email" id="parentEmail" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Phone *</label>
+                                <input type="tel" id="parentPhone" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Student Roll Number *</label>
+                                <input type="text" id="parentStudentRoll" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Relationship *</label>
+                                <select id="parentRelationship" required>
+                                    <option value="">Select Relationship</option>
+                                    <option value="father">Father</option>
+                                    <option value="mother">Mother</option>
+                                    <option value="guardian">Guardian</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Address *</label>
+                            <textarea id="parentAddress" rows="3" required></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Password *</label>
+                                <input type="password" id="parentPassword" required minlength="6">
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm Password *</label>
+                                <input type="password" id="parentConfirmPassword" required minlength="6">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-register-submit">
+                            <i class="fas fa-users"></i>
+                            Register as Parent
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2>Comprehensive Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <h3>Student Management</h3>
+                    <p>Complete student lifecycle management from admission to graduation</p>
+                    <ul>
+                        <li>Online admission process</li>
+                        <li>Student profiles & ID generation</li>
+                        <li>Academic progress tracking</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h3>Attendance System</h3>
+                    <p>Smart attendance tracking with multiple input methods</p>
+                    <ul>
+                        <li>QR Code & RFID support</li>
+                        <li>Biometric integration</li>
+                        <li>Auto alerts to parents</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-rupee-sign"></i>
+                    </div>
+                    <h3>Fee Management</h3>
+                    <p>Complete financial management with online payment support</p>
+                    <ul>
+                        <li>Online fee payment</li>
+                        <li>Auto receipts & invoices</li>
+                        <li>Scholarship management</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Results & Analytics</h3>
+                    <p>Comprehensive examination and performance management</p>
+                    <ul>
+                        <li>Online exam support</li>
+                        <li>Auto grading system</li>
+                        <li>Performance analytics</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3>Communication Hub</h3>
+                    <p>Seamless communication between all stakeholders</p>
+                    <ul>
+                        <li>Real-time messaging</li>
+                        <li>Push notifications</li>
+                        <li>Parent-teacher portal</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Mobile Integration</h3>
+                    <p>Full mobile app support for all users</p>
+                    <ul>
+                        <li>iOS & Android apps</li>
+                        <li>Offline capability</li>
+                        <li>Real-time sync</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Access Cards -->
+    <section class="quick-access">
+        <div class="container">
+            <h2>Quick Access</h2>
+            <div class="access-grid">
+                <div class="access-card" onclick="quickLogin('admin')">
+                    <i class="fas fa-user-shield"></i>
+                    <h3>Admin Dashboard</h3>
+                    <p>Complete system administration</p>
+                </div>
+                <div class="access-card" onclick="quickLogin('faculty')">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <h3>Faculty Portal</h3>
+                    <p>Teaching & class management</p>
+                </div>
+                <div class="access-card" onclick="quickLogin('student')">
+                    <i class="fas fa-user-graduate"></i>
+                    <h3>Student Portal</h3>
+                    <p>Academics & activities</p>
+                </div>
+                <div class="access-card" onclick="quickLogin('parent')">
+                    <i class="fas fa-users"></i>
+                    <h3>Parent Portal</h3>
+                    <p>Track your child's progress</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-graduation-cap"></i> EduManage Pro</h3>
+                    <p>Complete school management solution for modern educational institutions.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Features</h3>
+                    <ul>
+                        <li>Student Management</li>
+                        <li>Attendance Tracking</li>
+                        <li>Fee Management</li>
+                        <li>Result Publishing</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li>Help Center</li>
+                        <li>Documentation</li>
+                        <li>Training</li>
+                        <li>Contact Us</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 EduManage Pro. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.0.0/firebase-app-compat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.0.0/firebase-auth-compat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.0.0/firebase-firestore-compat.min.js"></script>
+    
+    <!-- Core Modules -->
+    <script src="error-handler.js"></script>
+    <script src="module-loader.js"></script>
+    <script src="data-sync.js"></script>
+    <script src="performance-monitor.js"></script>
+    <script src="api-manager.js"></script>
+    <script src="security-manager.js"></script>
+    <script src="notification-manager.js"></script>
+    
+    <!-- Application Modules (loaded by module-loader) -->
+    <script src="firebase-config.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
